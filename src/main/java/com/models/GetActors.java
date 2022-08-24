@@ -18,6 +18,39 @@ public class GetActors {
         return DriverManager.getConnection(url, user, password);
     }
     
+public static void updateCustomer(int customerid, String first_name, String last_name, String company, String adress, String city, String state, String country, String postal_code, String phone, String fax, String email, String supportrepid)
+	
+	String SQL = "UPDATE customer SET customer_id = ?, first_name = ?, last_name = ?, company = ?, adress = ?, city = ?, state = ?, country = ?, postal_code = ?, phone = ?, fax = ?, email = ?, support_rep_id = ?");
+	
+	try (Connection conn = connect();
+			PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+		pstmt.setInt(1, customerid);
+		pstmt.setString(2, first_name);
+		pstmt.setString(3, last_name);
+		pstmt.setString(4, company);
+		pstmt.setString(5, adress);
+		pstmt.setString(6, city);
+		pstmt.setString(7, fax);
+	}
+	
+	
+	public static void createCustomer(int customerid, String firstname, String lastname, String country, String postalcode, String phone, String email) {
+    	String SQL = "INSERT INTO customer(first_name, last_name, country, postal_code, phone, email) VALUES (?, ?, ?, ?, ? , ?)";
+    	try (Connection conn = connect();
+    			PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+    		pstmt.setInt(1, customerid);
+    		pstmt.setString(2, firstname);
+    		pstmt.setString(3, lastname);
+    		pstmt.setString(4, country);
+    		pstmt.setString(5, postalcode);
+    		pstmt.setString(6, phone);
+    		pstmt.setString(7, email);
+    		ResultSet rs = pstmt.executeQuery();
+    		displayCustomer(rs);
+    	} catch (SQLException ex) {
+    		System.out.println(ex.getMessage());
+    	}
+    
     public static void createCustomer() {
     	String SQL = "INSERT INTO customer(first_name, last_name, country, postal_code, phone, email";
     	try (Connection conn = connect();
