@@ -14,7 +14,7 @@ public class DatabaseProjectApplication {
 		SpringApplication.run(DatabaseProjectApplication.class, args);
 		
 		
-		
+		//GetActors.countryWithMostCustomers(); - Appendix B opgave 7 - Returns the country with the most customers
 		//GetActors.updateCustomer("Mathias", "Gylden", "Denmark", "3670", "64523", "Math.Gyld@net", 60); - Appendix B opgave 6 
                 //GetActors.createCustomer(60, "Testerson", "Testthis", "Denmark", "3670", "279384", "test@test"); - Appendix B opgave 5
 		//GetActors.limitCustomerSearch(5, 2); - Appendix B opgave 4 - Limit, offset
