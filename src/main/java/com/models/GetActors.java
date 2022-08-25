@@ -33,6 +33,23 @@ public static void updateCustomer(int customerid, String first_name, String last
 		pstmt.setString(7, fax);
 	}
 	
+	public static void updateCustomer(String firstname, String lastname, String country, String postalcode, String phone, String email, int customerid) {
+		String SQL = "UPDATE Customer SET first_name = ?, last_name = ?, country = ?, postal_code = ?, phone = ?, email = ? WHERE customer_id = ?";
+		try (Connection conn = connect();
+				PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+			pstmt.setString(1, firstname);
+			pstmt.setString(2, lastname);
+			pstmt.setString(3, country);
+			pstmt.setString(4, postalcode);
+			pstmt.setString(5, phone);
+			pstmt.setString(6, email);
+			pstmt.setInt(7, customerid);
+			ResultSet rs = pstmt.executeQuery();
+			displayCustomer(rs);
+		} catch (SQLException ex) {
+			System.out.println(ex.getMessage());
+		}
+	}
 	
 	public static void createCustomer(int customerid, String firstname, String lastname, String country, String postalcode, String phone, String email) {
     	String SQL = "INSERT INTO customer(customer_id, first_name, last_name, country, postal_code, phone, email) VALUES (?, ?, ?, ?, ? , ?, ?)";
