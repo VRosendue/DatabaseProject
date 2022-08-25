@@ -18,6 +18,19 @@ public class GetActors {
         return DriverManager.getConnection(url, user, password);
     }
     
+public static void limitCustomerSearch(int limit, int offset) {
+		String SQL = "SELECT customer_id, first_name, last_name, country, postal_code, phone, email FROM customer LIMIT ? OFFSET ?";
+		try (Connection conn = connect();
+				PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+			pstmt.setInt(1, limit);
+			pstmt.setInt(2, offset);
+			ResultSet rs = pstmt.executeQuery();
+			displayCustomer(rs);
+		} catch (SQLException ex) {
+			System.out.println(ex.getMessage());
+		}
+	}	
+	
 public static void updateCustomer(int customerid, String first_name, String last_name, String company, String adress, String city, String state, String country, String postal_code, String phone, String fax, String email, String supportrepid)
 	
 	String SQL = "UPDATE customer SET customer_id = ?, first_name = ?, last_name = ?, company = ?, adress = ?, city = ?, state = ?, country = ?, postal_code = ?, phone = ?, fax = ?, email = ?, support_rep_id = ?");
