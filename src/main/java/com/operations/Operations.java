@@ -4,8 +4,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import com.models.*;
 
@@ -21,6 +23,8 @@ public class Operations {
     }
 	
 	private static List<User> Users;
+	
+	private static List<CustomerSpender> CustomerSpenders;
 	
 	public static List<User> getAll(Connection connect){
 		return new ArrayList<>(Users);
@@ -55,6 +59,27 @@ public class Operations {
 		return isDeleted;
 	}
 	public static void updateCustomer(Connection connect) {
+		
+	}
+	
+	public static HashMap<List <User>, List <CustomerSpender>> bigSpenderCustomer(Connection connect, User user, CustomerSpender customerSpender){
+		Map<List <User>, List <CustomerSpender>> map = new HashMap<List <User>,List <CustomerSpender>>();
+		ArrayList<String> tempList;
+		
+		for (User user2 : Users) {
+			for (CustomerSpender invoiceTotal : CustomerSpenders) {
+					if (user2.getId() == invoiceTotal.getInvoice_customer_id()) {
+						if (map.containsKey(user2.user_id)) {
+							
+							map =map.put(user.user_id, invoiceTotal.invoice_total)+1;
+						}else {
+							map.put(user.user_id, invoiceTotal.invoice_total);
+						}
+						
+					}
+				}
+			}
+		return null;
 		
 	}
 }
