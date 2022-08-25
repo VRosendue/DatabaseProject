@@ -1,8 +1,8 @@
-ALTER TABLE superhero DROP COLUMN IF EXISTS assistant_id;
-ALTER TABLE superhero DROP COLUMN IF EXISTS power_id;
-ALTER TABLE power DROP COLUMN IF EXISTS superhero_id;
-ALTER TABLE assistant DROP COLUMN IF EXISTS superhero_id;
-ALTER TABLE superhero ADD COLUMN assistant_id int REFERENCES assistant;
-ALTER TABLE superhero ADD COLUMN power_id int REFERENCES power;
-ALTER TABLE power ADD COLUMN superhero_id int REFERENCES superhero;
-ALTER TABLE assistant ADD COLUMN superhero_id int REFERENCES superhero
+ALTER TABLE superhero DROP COLUMN IF EXISTS Assistant_id;
+ALTER TABLE superhero DROP COLUMN IF EXISTS Power_id;
+ALTER TABLE power DROP COLUMN IF EXISTS Superhero_id;
+ALTER TABLE assistant DROP COLUMN IF EXISTS Superhero_id;
+ALTER TABLE superhero ADD COLUMN Assistant_id int REFERENCES assistant;
+ALTER TABLE superhero ADD COLUMN Power_id int REFERENCES power;
+ALTER TABLE power ADD COLUMN Superhero_id int REFERENCES superhero;
+ALTER TABLE assistant ADD COLUMN Superhero_id int REFERENCES superhero
