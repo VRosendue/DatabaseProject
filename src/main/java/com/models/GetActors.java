@@ -17,7 +17,18 @@ public class GetActors {
     public static Connection connect() throws SQLException {
         return DriverManager.getConnection(url, user, password);
     }
-    
+ 
+public static void countryWithMostCustomers() {
+		String SQL = "SELECT country, count(*) FROM customer GROUP BY country ORDER BY count(*) DESC LIMIT 1";
+		try (Connection conn = connect();
+				PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+			
+			ResultSet rs = pstmt.executeQuery();
+			displayCountry(rs);
+		} catch (SQLException ex) {
+			System.out.println(ex.getMessage());
+		}
+	}	
 public static void limitCustomerSearch(int limit, int offset) {
 		String SQL = "SELECT customer_id, first_name, last_name, country, postal_code, phone, email FROM customer LIMIT ? OFFSET ?";
 		try (Connection conn = connect();
