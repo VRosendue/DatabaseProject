@@ -35,7 +35,7 @@ public static void updateCustomer(int customerid, String first_name, String last
 	
 	
 	public static void createCustomer(int customerid, String firstname, String lastname, String country, String postalcode, String phone, String email) {
-    	String SQL = "INSERT INTO customer(first_name, last_name, country, postal_code, phone, email) VALUES (?, ?, ?, ?, ? , ?)";
+    	String SQL = "INSERT INTO customer(customer_id, first_name, last_name, country, postal_code, phone, email) VALUES (?, ?, ?, ?, ? , ?, ?)";
     	try (Connection conn = connect();
     			PreparedStatement pstmt = conn.prepareStatement(SQL)) {
     		pstmt.setInt(1, customerid);
@@ -50,7 +50,7 @@ public static void updateCustomer(int customerid, String first_name, String last
     	} catch (SQLException ex) {
     		System.out.println(ex.getMessage());
     	}
-    
+    }
     public static void createCustomer() {
     	String SQL = "INSERT INTO customer(first_name, last_name, country, postal_code, phone, email";
     	try (Connection conn = connect();
