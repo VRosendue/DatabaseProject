@@ -162,7 +162,9 @@ public class Operations {
 
 	}
 	
-	public static List<Integer, String> mostPopularGenre()
+	public static List<String, String> mostPopularGenre(){
+		String sql = "Select * FROM "
+	}
 
 	public static HashMap<Integer, Double> sortByValue(HashMap<Integer, Double> hm) {
 		// Create a list from elements of HashMap
