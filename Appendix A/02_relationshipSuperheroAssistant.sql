@@ -7,6 +7,4 @@ ALTER TABLE superhero ADD COLUMN Power_id int REFERENCES power;
 ALTER TABLE power ADD COLUMN Superhero_id int REFERENCES superhero;
 ALTER TABLE assistant ADD COLUMN Superhero_id int REFERENCES superhero
 
-ALTER TABLE superhero ADD CONSTRAINT fk_power FOREIGN KEY(power_id) REFERENCES power(id) ON DELETE CASCADE;
-ALTER TABLE power ADD CONSTRAINT fk_superhero FOREIGN KEY(superhero_id) REFERENCES superhero(id) ON DELETE CASCADE;
 ALTER TABLE assistant ADD CONSTRAINT fk_superhero FOREIGN KEY(superhero_id) REFERENCES superhero(id) ON DELETE CASCADE;
