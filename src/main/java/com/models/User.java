@@ -10,7 +10,7 @@ import java.sql.Statement;
 
 public class User {
 	
-	public int id;
+	public int user_id;
 	public String name;
 	public String last_name;
 	public String country;
@@ -22,7 +22,7 @@ public class User {
 	public User(int id, String name, String last_name, String country, int postal_code, int phone_number,
 			String email) {
 		super();
-		this.id = id;
+		this.user_id = id;
 		this.name = name;
 		this.last_name = last_name;
 		this.country = country;
@@ -33,12 +33,12 @@ public class User {
 
 
 	public int getId() {
-		return id;
+		return user_id;
 	}
 
 
 	public void setId(int id) {
-		this.id = id;
+		this.user_id = id;
 	}
 
 
