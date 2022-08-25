@@ -160,13 +160,13 @@ public static void updateCustomer(int customerid, String first_name, String last
     }
 
   
-    private static void displayActor(ResultSet rs) throws SQLException {
-        while (rs.next()) {
-            System.out.println(rs.getString("actor_id") + "\t"
-                    + rs.getString("first_name") + "\t"
-                    + rs.getString("last_name"));}
+    private static void displayCountry(ResultSet rs) throws SQLException {
+		while (rs.next()) {
+			System.out.println(
+					rs.getString("country"));
+		}
 
-        }
+	}
         
     private static void displayCustomer(ResultSet rs) throws SQLException {
     	while (rs.next()) {
