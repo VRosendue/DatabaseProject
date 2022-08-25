@@ -6,13 +6,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.models.Actor;
 import com.models.GetActors;
+import com.operations.*;
 
 @SpringBootApplication
 public class DatabaseProjectApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DatabaseProjectApplication.class, args);
 		
+		SpringApplication.run(DatabaseProjectApplication.class, args);
+		System.out.println(Operations.bigSpenderCustomer(null, null, null));
 		
 		//GetActors.countryWithMostCustomers(); - Appendix B opgave 7 - Returns the country with the most customers
 		//GetActors.updateCustomer("Mathias", "Gylden", "Denmark", "3670", "64523", "Math.Gyld@net", 60); - Appendix B opgave 6 
