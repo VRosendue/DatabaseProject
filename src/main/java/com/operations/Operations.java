@@ -32,6 +32,13 @@ public class Operations {
 	private static List<User> Users;
 
 	private static List<CustomerSpender> CustomerSpenders;
+	
+	public static void createCustomer() throws SQLException {
+    	String SQL = "INSERT INTO customer(first_name, last_name, country, postal_code, phone, email";
+    	try (Connection conn = connect();
+    			PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+    }
+    }
 
 	public static List<User> getAll(Connection connect, User user) throws SQLException {
 		Connection conn = connect();
@@ -48,7 +55,6 @@ public class Operations {
 						rst.getString("email"));
 				customerList.add(user);
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -78,19 +84,45 @@ public class Operations {
 				}
 			}
 		}
-		/*
-		 * for (User user : Users) { if (user.getId() == id) ; { return user; } }
-		 */
 		return customerList;
 	}
 
-	public static List<User> getByName(Connection connect, String name) {
+	public static void getByName(String customerName) {
+		String SQL = "SELECT customer_id, first_name, last_name, country, postal_code, phone, email " + "FROM customer "
+				+ "WHERE first_name LIKE ?"; // Only works with the exact name search - %?% might solve
+
+		try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+			pstmt.setString(1, customerName);
+			ResultSet rs = pstmt.executeQuery();
+			displayCustomer(rs);
+		} catch (SQLException ex) {
+			System.out.println(ex.getMessage());
+		}
 		/*
 		 * List<User> userByName = new ArrayList<User>(); for (User user : userByName) {
 		 * if (user.getName().toLowerCase().contains(user.name.toLowerCase())) {
 		 * userByName.add(user); } } return userByName;
 		 */
-		return null;
+	}
+
+	
+
+	public static void updateCustomer(String firstname, String lastname, String country, String postalcode,
+			String phone, String email, int customerid) {
+		String SQL = "UPDATE Customer SET first_name = ?, last_name = ?, country = ?, postal_code = ?, phone = ?, email = ? WHERE customer_id = ?";
+		try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+			pstmt.setString(1, firstname);
+			pstmt.setString(2, lastname);
+			pstmt.setString(3, country);
+			pstmt.setString(4, postalcode);
+			pstmt.setString(5, phone);
+			pstmt.setString(6, email);
+			pstmt.setInt(7, customerid);
+			ResultSet rs = pstmt.executeQuery();
+			displayCustomer(rs);
+		} catch (SQLException ex) {
+			System.out.println(ex.getMessage());
+		}
 	}
 
 	public static boolean deleteUser(Connection connect, User user) {
@@ -130,7 +162,7 @@ public class Operations {
 						rst.getString("email"));
 				customerList.add(user);
 			} catch (SQLException e) {
-				// TODO: handle exception
+				e.printStackTrace();
 			}
 			rst.close();
 		}
@@ -141,7 +173,7 @@ public class Operations {
 						rstspender.getInt("total"));
 				customerSpenderList.add(customerSpender);
 			} catch (Exception e) {
-				// TODO: handle exception
+				e.printStackTrace();
 			}
 		}
 
@@ -154,7 +186,6 @@ public class Operations {
 		for (User user2 : customerList) {
 			Map.Entry<Integer, Double> entry = listOfInvoices.entrySet().iterator().next();
 			Integer key = entry.getKey();
-			Double value = entry.getValue();
 			if (user2.getId() == key) {
 				System.out.println(user2);
 			}
@@ -188,12 +219,10 @@ public class Operations {
 
 		}
 		genreMapCounter = sortByValueString(genreMapCounter);
-			
+
 		return genreMapCounter;
 
 	}
-
-	
 
 	public static HashMap<Integer, Double> sortByValue(HashMap<Integer, Double> hm) {
 		// Create a list from elements of HashMap
@@ -214,7 +243,6 @@ public class Operations {
 		return temp;
 	}
 
-	
 	public static HashMap<String, Integer> sortByValueString(HashMap<String, Integer> hm) {
 		// Create a list from elements of HashMap
 		List<Map.Entry<String, Integer>> list = new LinkedList<Map.Entry<String, Integer>>(hm.entrySet());
@@ -232,5 +260,13 @@ public class Operations {
 			temp.put(aa.getKey(), aa.getValue());
 		}
 		return temp;
+	}
+
+	private static void displayCustomer(ResultSet rs) throws SQLException {
+		while (rs.next()) {
+			System.out.println(rs.getString("customer_id") + "\t" + rs.getString("first_name") + "\t"
+					+ rs.getString("last_name") + "\t" + rs.getString("country") + "\t" + rs.getString("postal_code")
+					+ "\t" + rs.getString("phone") + "\t" + rs.getString("email"));
+		}
 	}
 }

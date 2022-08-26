@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import services.CrudService;
+
 
 public abstract class GetActors implements CrudService {
 
@@ -42,7 +44,8 @@ public static void limitCustomerSearch(int limit, int offset) {
 		}
 	}	
 	
-public static void updateCustomer(int customerid, String first_name, String last_name, String company, String adress, String city, String state, String country, String postal_code, String phone, String fax, String email, String supportrepid)
+public static void updateCustomer(int customerid, String first_name, String last_name, String company, String adress, String city, String state, String country, String postal_code, String phone, String fax, String email, String supportrepid) {
+	
 	
 	String SQL = "UPDATE customer SET customer_id = ?, first_name = ?, last_name = ?, company = ?, adress = ?, city = ?, state = ?, country = ?, postal_code = ?, phone = ?, fax = ?, email = ?, support_rep_id = ?");
 	
@@ -55,6 +58,7 @@ public static void updateCustomer(int customerid, String first_name, String last
 		pstmt.setString(5, adress);
 		pstmt.setString(6, city);
 		pstmt.setString(7, fax);
+	}
 	}
 	
 	public static void updateCustomer(String firstname, String lastname, String country, String postalcode, String phone, String email, int customerid) {
@@ -96,6 +100,7 @@ public static void updateCustomer(int customerid, String first_name, String last
     	String SQL = "INSERT INTO customer(first_name, last_name, country, postal_code, phone, email";
     	try (Connection conn = connect();
     			PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+    }
     }
     
     public static void findCustomerById(int customerID) {
