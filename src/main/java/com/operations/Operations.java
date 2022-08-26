@@ -10,13 +10,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-
 import com.models.*;
 
 import services.CrudService;
@@ -34,17 +31,27 @@ public abstract class Operations implements CrudService {
 	private static List<User> Users;
 
 	private static List<CustomerSpender> CustomerSpenders;
-	
-	public void createCustomer() {
-    	String SQL = "INSERT INTO customer(first_name, last_name, country, postal_code, phone, email";
+
+	public static void createCustomer(String firstname, String lastname, String country, String postalcode, String phone, String email) {
+    	String SQL = "INSERT INTO customer(first_name, last_name, country, postal_code, phone, email) VALUES (?, ?, ?, ? , ?, ?)";
     	try (Connection conn = connect();
     			PreparedStatement pstmt = conn.prepareStatement(SQL)) {
-    } catch (SQLException e) {
-		e.printStackTrace();
-	}
+    		pstmt.setString(1, firstname);
+    		pstmt.setString(2, lastname);
+    		pstmt.setString(3, country);
+    		pstmt.setString(4, postalcode);
+    		pstmt.setString(5, phone);
+    		pstmt.setString(6, email);
+    		ResultSet rs = pstmt.executeQuery();
+    		displayCustomer(rs);
+    	} catch (SQLException ex) {
+    		System.out.println(ex.getMessage());
+    	}
     }
+	
 
-	public static List<User> getAll(User user) throws SQLException {
+	public static List<User> getAll() throws SQLException {
+		User user = null;
 		Connection conn = connect();
 		Statement stm;
 		stm = (Statement) conn.createStatement();
@@ -66,7 +73,8 @@ public abstract class Operations implements CrudService {
 
 	}
 
-	public static ArrayList<User> getById(int id, User user) throws SQLException {
+	public static ArrayList<User> getById(int id) throws SQLException {
+		User user = null;
 		String sql = "\"SELECT customer_id, first_name, last_name, country, postal_code, phone, email \"\r\n"
 				+ "    			+ \"FROM customer \"\r\n" + "    			+ \"WHERE customer_id = ?\"";
 		Connection conn = connect();
@@ -93,8 +101,8 @@ public abstract class Operations implements CrudService {
 
 	public static void getByName(String customerName) {
 		String SQL = "SELECT customer_id, first_name, last_name, country, postal_code, phone, email " + "FROM customer "
-				+ "WHERE first_name LIKE ?"; // Only works with the exact name search - %?% might solve
-
+				+ "WHERE first_name LIKE " + "%"+"?"+"%"; 
+		
 		try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(SQL)) {
 			pstmt.setString(1, customerName);
 			ResultSet rs = pstmt.executeQuery();
@@ -108,8 +116,6 @@ public abstract class Operations implements CrudService {
 		 * userByName.add(user); } } return userByName;
 		 */
 	}
-
-	
 
 	public static void updateCustomer(String firstname, String lastname, String country, String postalcode,
 			String phone, String email, int customerid) {
@@ -142,8 +148,11 @@ public abstract class Operations implements CrudService {
 		return isDeleted;
 	}
 
-	public static void bigSpenderCustomer(User user, CustomerSpender customerSpender) throws SQLException {
+	public static void bigSpenderCustomer() throws SQLException {
 
+		User user = null;
+		CustomerSpender customerSpender = null;
+		
 		Connection conn = connect();
 		Statement stm;
 		stm = (Statement) conn.createStatement();
@@ -223,22 +232,21 @@ public abstract class Operations implements CrudService {
 		return genreMapCounter;
 
 	}
-	
+
 	public static void countryWithMostCustomers() {
 		String SQL = "SELECT country, count(*) FROM customer GROUP BY country ORDER BY count(*) DESC LIMIT 1";
-		try (Connection conn = connect();
-				PreparedStatement pstmt = conn.prepareStatement(SQL)) {
-			
+		try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+
 			ResultSet rs = pstmt.executeQuery();
 			displayCountry(rs);
 		} catch (SQLException ex) {
 			System.out.println(ex.getMessage());
 		}
-	}	
-public static void limitCustomerSearch(int limit, int offset) {
+	}
+
+	public static void limitCustomerSearch(int limit, int offset) {
 		String SQL = "SELECT customer_id, first_name, last_name, country, postal_code, phone, email FROM customer LIMIT ? OFFSET ?";
-		try (Connection conn = connect();
-				PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+		try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(SQL)) {
 			pstmt.setInt(1, limit);
 			pstmt.setInt(2, offset);
 			ResultSet rs = pstmt.executeQuery();
@@ -246,8 +254,7 @@ public static void limitCustomerSearch(int limit, int offset) {
 		} catch (SQLException ex) {
 			System.out.println(ex.getMessage());
 		}
-	}	
-
+	}
 
 	public static HashMap<Integer, Double> sortByValue(HashMap<Integer, Double> hm) {
 		// Create a list from elements of HashMap
@@ -294,11 +301,11 @@ public static void limitCustomerSearch(int limit, int offset) {
 					+ "\t" + rs.getString("phone") + "\t" + rs.getString("email"));
 		}
 	}
-	 private static void displayCountry(ResultSet rs) throws SQLException {
-			while (rs.next()) {
-				System.out.println(
-						rs.getString("country"));
-			}
 
+	private static void displayCountry(ResultSet rs) throws SQLException {
+		while (rs.next()) {
+			System.out.println(rs.getString("country"));
 		}
+
+	}
 }

@@ -4,9 +4,10 @@ package com.postgres;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.models.Actor;
-import com.models.GetActors;
 import com.operations.*;
+
+import kata.coding.Actor;
+import kata.coding.GetActors;
 
 @SpringBootApplication
 public class DatabaseProjectApplication {
@@ -14,7 +15,39 @@ public class DatabaseProjectApplication {
 	public static void main(String[] args) {
 		
 		SpringApplication.run(DatabaseProjectApplication.class, args);
-		System.out.println(Operations.bigSpenderCustomer(null, null, null));
+				
+		switch (9) {
+		case 1:
+			Operations.getAll();
+			break;
+		case 2:
+			Operations.getById(50);
+			break;
+		case 3:
+			Operations.getByName("Enrique");
+			break;
+		case 4:
+			Operations.limitCustomerSearch(5, 20);
+			break;
+		case 5:
+			Operations.createCustomer("Testerson", "Testthis", "Denmark", "3670", "279384", "test@test");
+			break;
+		case 6:
+			Operations.updateCustomer("Mathias", "Gylden", "Denmark", "3670", "64523", "Math.Gyld@net", 60);
+			break;
+		case 7:
+			Operations.countryWithMostCustomers();
+			break;
+		case 8:
+			Operations.bigSpenderCustomer();
+			break;
+		case 9:
+			Operations.mostPopularGenre();
+			break;
+		default:
+			System.out.println("choose another option");
+			break;
+		}
 		
 		//GetActors.countryWithMostCustomers(); - Appendix B opgave 7 - Returns the country with the most customers
 		//GetActors.updateCustomer("Mathias", "Gylden", "Denmark", "3670", "64523", "Math.Gyld@net", 60); - Appendix B opgave 6 
