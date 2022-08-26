@@ -111,7 +111,7 @@ public class Operations {
 	}
 
 	public static void bigSpenderCustomer(User user, CustomerSpender customerSpender) throws SQLException {
-		
+
 		Connection conn = connect();
 		Statement stm;
 		stm = (Statement) conn.createStatement();
@@ -161,10 +161,39 @@ public class Operations {
 		}
 
 	}
-	
-	public static List<String, String> mostPopularGenre(){
-		String sql = "Select * FROM "
+
+	public static HashMap<String, Integer> mostPopularGenre() throws SQLException {
+		String sql = "SELECT *\r\n" + "FROM customer\r\n"
+				+ "INNER JOIN invoice ON invoice.customer_id = customer.customer_id\r\n"
+				+ "INNER JOIN invoice_line ON invoice_line.invoice_id = invoice.invoice_id\r\n"
+				+ "INNER JOIN track ON invoice_line.track_id = track.track_id\r\n"
+				+ "INNER JOIN genre ON track.genre_id = genre.genre_id\r\n" + "WHERE customer.customer_id = ?;\r\n";
+		Connection conn = connect();
+		Statement stm;
+		stm = (Statement) conn.createStatement();
+		ResultSet rst;
+		rst = ((java.sql.Statement) stm).executeQuery(sql);
+
+		HashMap<Integer, String> map = new HashMap<Integer, String>();
+		HashMap<String, Integer> genreMapCounter = new HashMap<String, Integer>();
+		while (rst.next()) {
+			map.put(rst.getInt("Customer_id"), rst.getString("genre_name"));
+
+			if (genreMapCounter.containsKey(rst.getString("genre_name"))) {
+				genreMapCounter.put(rst.getString("genre_name"), +1);
+
+			} else {
+				genreMapCounter.put(rst.getString("genre_name"), 1);
+			}
+
+		}
+		genreMapCounter = sortByValueString(genreMapCounter);
+			
+		return genreMapCounter;
+
 	}
+
+	
 
 	public static HashMap<Integer, Double> sortByValue(HashMap<Integer, Double> hm) {
 		// Create a list from elements of HashMap
@@ -177,24 +206,31 @@ public class Operations {
 			}
 		});
 
-		// put data from sorted list to hashmap
+		// put data from sorted list to HashMap
 		HashMap<Integer, Double> temp = new LinkedHashMap<Integer, Double>();
 		for (Map.Entry<Integer, Double> aa : list) {
 			temp.put(aa.getKey(), aa.getValue());
 		}
 		return temp;
 	}
+
+	
+	public static HashMap<String, Integer> sortByValueString(HashMap<String, Integer> hm) {
+		// Create a list from elements of HashMap
+		List<Map.Entry<String, Integer>> list = new LinkedList<Map.Entry<String, Integer>>(hm.entrySet());
+
+		// Sort the list
+		Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
+			public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+				return (o1.getValue()).compareTo(o2.getValue());
+			}
+		});
+
+		// put data from sorted list to HashMap
+		HashMap<String, Integer> temp = new LinkedHashMap<String, Integer>();
+		for (Map.Entry<String, Integer> aa : list) {
+			temp.put(aa.getKey(), aa.getValue());
+		}
+		return temp;
+	}
 }
-/*
- * ArrayList<String> tempList;
- * 
- * for (User user2 : Users) { for (CustomerSpender invoiceTotal :
- * CustomerSpenders) { if (user2.getId() ==
- * invoiceTotal.getInvoice_customer_id()) { if (map.containsKey(user2.user_id))
- * {
- * 
- * map = map.put(user.user_id, invoiceTotal.invoice_total) + 1; } else {
- * map.put(user.user_id, invoiceTotal.invoice_total); }
- * 
- * } } }
- */
