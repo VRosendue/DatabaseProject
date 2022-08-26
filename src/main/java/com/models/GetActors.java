@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 
-public class GetActors {
+public abstract class GetActors implements CrudService {
 
     private final static String url = "jdbc:postgresql://localhost/Chinook";
     private final static String user = "postgres";
