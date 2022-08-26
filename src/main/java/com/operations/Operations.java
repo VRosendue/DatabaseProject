@@ -19,7 +19,9 @@ import java.util.stream.Collectors;
 
 import com.models.*;
 
-public class Operations {
+import services.CrudService;
+
+public abstract class Operations implements CrudService {
 
 	private final static String url = "jdbc:postgresql://localhost/Chinook";
 	private final static String user = "postgres";
@@ -33,14 +35,16 @@ public class Operations {
 
 	private static List<CustomerSpender> CustomerSpenders;
 	
-	public static void createCustomer() throws SQLException {
+	public void createCustomer() {
     	String SQL = "INSERT INTO customer(first_name, last_name, country, postal_code, phone, email";
     	try (Connection conn = connect();
     			PreparedStatement pstmt = conn.prepareStatement(SQL)) {
-    }
+    } catch (SQLException e) {
+		e.printStackTrace();
+	}
     }
 
-	public static List<User> getAll(Connection connect, User user) throws SQLException {
+	public static List<User> getAll(User user) throws SQLException {
 		Connection conn = connect();
 		Statement stm;
 		stm = (Statement) conn.createStatement();
@@ -138,10 +142,6 @@ public class Operations {
 		return isDeleted;
 	}
 
-	public static void updateCustomer(Connection connect) {
-
-	}
-
 	public static void bigSpenderCustomer(User user, CustomerSpender customerSpender) throws SQLException {
 
 		Connection conn = connect();
@@ -223,6 +223,31 @@ public class Operations {
 		return genreMapCounter;
 
 	}
+	
+	public static void countryWithMostCustomers() {
+		String SQL = "SELECT country, count(*) FROM customer GROUP BY country ORDER BY count(*) DESC LIMIT 1";
+		try (Connection conn = connect();
+				PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+			
+			ResultSet rs = pstmt.executeQuery();
+			displayCountry(rs);
+		} catch (SQLException ex) {
+			System.out.println(ex.getMessage());
+		}
+	}	
+public static void limitCustomerSearch(int limit, int offset) {
+		String SQL = "SELECT customer_id, first_name, last_name, country, postal_code, phone, email FROM customer LIMIT ? OFFSET ?";
+		try (Connection conn = connect();
+				PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+			pstmt.setInt(1, limit);
+			pstmt.setInt(2, offset);
+			ResultSet rs = pstmt.executeQuery();
+			displayCustomer(rs);
+		} catch (SQLException ex) {
+			System.out.println(ex.getMessage());
+		}
+	}	
+
 
 	public static HashMap<Integer, Double> sortByValue(HashMap<Integer, Double> hm) {
 		// Create a list from elements of HashMap
@@ -269,4 +294,11 @@ public class Operations {
 					+ "\t" + rs.getString("phone") + "\t" + rs.getString("email"));
 		}
 	}
+	 private static void displayCountry(ResultSet rs) throws SQLException {
+			while (rs.next()) {
+				System.out.println(
+						rs.getString("country"));
+			}
+
+		}
 }
